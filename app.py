@@ -123,7 +123,7 @@ hr { border-color: #252836; }
 # ─────────────────────────────────────────────────────────
 @st.cache_resource
 def load_artifacts():
-    with open('xgb_model.pkl', 'rb') as f:
+    with open('models/xgb_model.pkl', 'rb') as f:
         model = pickle.load(f)
     with open('scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
