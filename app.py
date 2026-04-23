@@ -125,9 +125,9 @@ hr { border-color: #252836; }
 def load_artifacts():
     with open('models/xgb_model.pkl', 'rb') as f:
         model = pickle.load(f)
-    with open('scaler.pkl', 'rb') as f:
+    with open('models/scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
-    with open('feature_names.json', 'r') as f:
+    with open('models/feature_names.json', 'r') as f:
         feature_names = json.load(f)
     return model, scaler, feature_names
 
