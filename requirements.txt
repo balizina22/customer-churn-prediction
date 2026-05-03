@@ -6,5 +6,3 @@ xgboost
 matplotlib
 requests
 shap
-fastapigit 
-uvicorn
