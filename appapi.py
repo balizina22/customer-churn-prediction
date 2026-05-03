@@ -16,24 +16,139 @@ st.set_page_config(page_title="Churn Predictor", page_icon="📡",
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap');
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; background-color: #0d0f14; color: #e8eaf0; }
+
+html, body, [class*="css"] {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #0d0f14;
+    color: #e8eaf0;
+}
 .stApp { background-color: #0d0f14; }
-section[data-testid="stSidebar"] { background-color: #151820 !important; border-right: 1px solid #252836; }
+
+/* Sidebar visible */
+section[data-testid="stSidebar"] {
+    background-color: #151820 !important;
+    border-right: 1px solid #252836;
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Bouton toggle sidebar — TOUJOURS visible */
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+button[kind="header"] {
+    display: flex !important;
+    visibility: visible !important;
+    color: #00e5ff !important;
+    background: #151820 !important;
+}
+
+/* Cache SEULEMENT le menu hamburger et le footer — PAS le header entier */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+
+/* Cache le header Streamlit mais garde le bouton sidebar */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+}
+header[data-testid="stHeader"] > div:first-child {
+    visibility: hidden;
+}
+header[data-testid="stHeader"] > div:last-child {
+    visibility: visible !important;
+}
+
 h1, h2, h3 { font-family: 'Space Mono', monospace !important; }
-.metric-card { background: #151820; border: 1px solid #252836; border-radius: 12px; padding: 20px 24px; text-align: center; margin-bottom: 8px; }
-.metric-value { font-family: 'Space Mono', monospace; font-size: 2.2rem; font-weight: 700; line-height: 1.1; }
-.metric-label { font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
-.badge-churn { display:inline-block; background:rgba(255,77,109,0.15); border:1px solid #ff4d6d; color:#ff4d6d; padding:8px 20px; border-radius:999px; font-family:'Space Mono',monospace; font-size:0.9rem; font-weight:700; }
-.badge-safe { display:inline-block; background:rgba(0,245,160,0.12); border:1px solid #00f5a0; color:#00f5a0; padding:8px 20px; border-radius:999px; font-family:'Space Mono',monospace; font-size:0.9rem; font-weight:700; }
-.section-title { font-family:'Space Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#00e5ff; border-bottom:1px solid #252836; padding-bottom:8px; margin:28px 0 16px 0; }
-.api-ok { display:inline-block; background:rgba(0,245,160,0.1); border:1px solid #00f5a0; color:#00f5a0; padding:4px 12px; border-radius:999px; font-family:'Space Mono',monospace; font-size:0.7rem; }
-.api-err { display:inline-block; background:rgba(255,77,109,0.1); border:1px solid #ff4d6d; color:#ff4d6d; padding:4px 12px; border-radius:999px; font-family:'Space Mono',monospace; font-size:0.7rem; }
+
+.metric-card {
+    background: #151820;
+    border: 1px solid #252836;
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: center;
+    margin-bottom: 8px;
+}
+.metric-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+.metric-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+}
+.badge-churn {
+    display: inline-block;
+    background: rgba(255,77,109,0.15);
+    border: 1px solid #ff4d6d;
+    color: #ff4d6d;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+.badge-safe {
+    display: inline-block;
+    background: rgba(0,245,160,0.12);
+    border: 1px solid #00f5a0;
+    color: #00f5a0;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+.section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #00e5ff;
+    border-bottom: 1px solid #252836;
+    padding-bottom: 8px;
+    margin: 28px 0 16px 0;
+}
+.api-ok {
+    display: inline-block;
+    background: rgba(0,245,160,0.1);
+    border: 1px solid #00f5a0;
+    color: #00f5a0;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+}
+.api-err {
+    display: inline-block;
+    background: rgba(255,77,109,0.1);
+    border: 1px solid #ff4d6d;
+    color: #ff4d6d;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+}
 hr { border-color: #252836; }
-#MainMenu, footer, header { visibility: hidden; }
 .stDeployButton { display: none; }
-.stButton > button { background:#00e5ff !important; color:#000 !important; font-family:'Space Mono',monospace !important; font-weight:700 !important; border:none !important; border-radius:8px !important; padding:12px 24px !important; width:100% !important; font-size:0.85rem !important; }
+.stButton > button {
+    background: #00e5ff !important;
+    color: #000 !important;
+    font-family: 'Space Mono', monospace !important;
+    font-weight: 700 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 12px 24px !important;
+    width: 100% !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.05em !important;
+}
 </style>
 """, unsafe_allow_html=True)
+
 
 
 # ── API helpers ──────────────────────────────────────────
@@ -53,7 +168,7 @@ def call_predict(payload):
             return None
         return data["probability"], data["prediction"]
     except requests.exceptions.ConnectionError:
-        st.error(f"API inaccessible sur {API_URL}  —  lance : uvicorn app_api:app --reload")
+        st.error(f"API inaccessible sur {API_URL}  —  lance : uvicorn api:app --reload")
         return None
     except Exception as e:
         st.error(f"Erreur : {e}")
@@ -160,7 +275,7 @@ def build_payload():
 # ── Prediction ────────────────────────────────────────────
 if predict_btn:
     if not api_ok:
-        st.warning("API hors ligne. Lance : `uvicorn app_api:app --reload`")
+        st.warning("API hors ligne. Lance : `uvicorn api:app --reload`")
     else:
         with st.spinner("Appel API en cours..."):
             result = call_predict(build_payload())

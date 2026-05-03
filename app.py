@@ -31,10 +31,40 @@ html, body, [class*="css"] {
     color: #e8eaf0;
 }
 .stApp { background-color: #0d0f14; }
+
+/* Sidebar visible */
 section[data-testid="stSidebar"] {
     background-color: #151820 !important;
     border-right: 1px solid #252836;
+    display: block !important;
+    visibility: visible !important;
 }
+
+/* Bouton toggle sidebar — TOUJOURS visible */
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+button[kind="header"] {
+    display: flex !important;
+    visibility: visible !important;
+    color: #00e5ff !important;
+    background: #151820 !important;
+}
+
+/* Cache SEULEMENT le menu hamburger et le footer — PAS le header entier */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+
+/* Cache le header Streamlit mais garde le bouton sidebar */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+}
+header[data-testid="stHeader"] > div:first-child {
+    visibility: hidden;
+}
+header[data-testid="stHeader"] > div:last-child {
+    visibility: visible !important;
+}
+
 h1, h2, h3 { font-family: 'Space Mono', monospace !important; }
 
 .metric-card {
@@ -90,17 +120,27 @@ h1, h2, h3 { font-family: 'Space Mono', monospace !important; }
     padding-bottom: 8px;
     margin: 28px 0 16px 0;
 }
-.gauge-track {
-    background: #252836;
+.api-ok {
+    display: inline-block;
+    background: rgba(0,245,160,0.1);
+    border: 1px solid #00f5a0;
+    color: #00f5a0;
+    padding: 4px 12px;
     border-radius: 999px;
-    height: 10px;
-    width: 100%;
-    margin: 8px 0;
-    overflow: hidden;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
 }
-.gauge-fill { height: 100%; border-radius: 999px; }
+.api-err {
+    display: inline-block;
+    background: rgba(255,77,109,0.1);
+    border: 1px solid #ff4d6d;
+    color: #ff4d6d;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+}
 hr { border-color: #252836; }
-#MainMenu, footer, header { visibility: hidden; }
 .stDeployButton { display: none; }
 .stButton > button {
     background: #00e5ff !important;
@@ -166,6 +206,8 @@ st.markdown("""
 # SIDEBAR — INPUT CLIENT
 # ─────────────────────────────────────────────────────────
 with st.sidebar:
+    st.title("Menu")
+    st.write("Options ici")
     st.markdown("""
     <div style="font-family:Space Mono,monospace; font-size:0.65rem;
                 color:#00e5ff; text-transform:uppercase; letter-spacing:0.15em;
