@@ -6,3 +6,6 @@ xgboost
 matplotlib
 requests
 shap
+fastapi
+uvicorn
+xgboost
